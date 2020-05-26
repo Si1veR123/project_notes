@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html>
+    <head>
+        <link rel="icon" href="{% static 'favicon.png' %}">
+        <style>
+            html, body {
+                margin:0;
+                padding:0;
+            }
+        </style>
+        {% block 'head' %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block 'content' %}
+        {% endblock %}
+
+        {% if debug %}
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        {% else %}
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+        {% endif %}
+
+        {% block 'scripts' %}
+        {% endblock %}
+    </body>
+</html>

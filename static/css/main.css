@@ -1,0 +1,61 @@
+@font-face {
+    font-family: "coolvetica";
+    src: url("/static/coolvetica.ttf")
+}
+
+#navbar {
+    position: absolute;
+    top: 0;
+
+    width: 100%;
+    height: 10%;
+
+    background-color: rgb(187, 255, 153);
+}
+
+#navbar-option-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#navbar p {
+    font-family: coolvetica;
+    font-size: 5vh;
+    color: white;
+}
+
+#navbar p:hover {
+    cursor: pointer;
+}
+
+.navbar-dropdown {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    height: 50vh;
+    background-color: rgb(237, 255, 203);
+    display: none;
+}
+
+#wait-screen {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    color: rgb(187, 255, 153);
+    font-family: coolvetica;
+    font-size: 5vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#wait-screen img {
+    width: 5vw;
+}
