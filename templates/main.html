@@ -6,12 +6,39 @@
 {% endblock %}
 
 {% block 'content' %}
-<div id="page-container">
+<div id="site-container">
+    <div id="pages">
+        <div class="page" v-show="currentPage === '#home'" :ref="'#home'">
+            <div class="page-content">
+
+            </div>
+        </div>
+        <div class="page" v-show="currentPage === '#projects'" :ref="'#projects'">
+            <div class="page-content">
+                <cards :type="'project'"></cards>
+            </div>
+        </div>
+        <div class="page" v-show="currentPage === '#topics'" :ref="'#topics'">
+            <div class="page-content">
+                <cards :type="'topic'"></cards>
+            </div>
+        </div>
+        <div class="page" v-show="currentPage === '#languages'" :ref="'#languages'">
+            <div class="page-content">
+                <cards :type="'language'"></cards>
+            </div>
+        </div>
+    </div>
     <nav-bar
-    v-on:change-page="changePage($event)"
+    @change-page="changePage($event)"
     :headers="[
         {page: '#home', text: 'Home', dropdown: false},
-        {page: '#projects', text: 'Projects', dropdown: true},
+        {page: '#projects', text: 'Projects', dropdown: true, options: [
+                {text: 'Projects', page: '#projects'},
+                {text: 'Topics', page: '#topics'},
+                {text: 'Languages', page: '#languages'}
+            ]
+        },
     ]">
     </nav-bar>
     <div id="wait-screen">
