@@ -125,3 +125,4 @@ except ImportError:
     print("IMPORTING DJANGO HEROKU")
     import django_heroku
     django_heroku.settings(locals())
+    SECRET_KEY = os.environ.get("SECRET_KEY")

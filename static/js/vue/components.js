@@ -285,12 +285,12 @@ Vue.component('cards', {
         </div>
         <div class="card-info-container" v-show="cardInfo">
             <div class="card-info">
-                <p><strong>{{ cardInfoData.title }}</strong></p>
+                <p class="card-info-title">{{ cardInfoData.title }}</p>
                 <p>{{ cardInfoData.description }}</p>
                 <p>{{ cardInfoData.language }}</p>
                 <p>{{ cardInfoData.topics }}</p>
                 <p>{{ cardInfoData.start }} - {{ cardInfoData.end }}</p>
-                <a :href="cardInfoData.link" target="_blank">{{ cardInfoData.link }}</a>
+                <a :href="cardInfoData.link" target="_blank" style="color: white;">Github</a>
                 <hr>
                 <p>{{ cardInfoData.longDescription }}</p>
             </div>

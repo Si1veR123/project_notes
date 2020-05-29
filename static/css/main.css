@@ -214,7 +214,7 @@
 }
 
 .card-info-container {
-    margin-left: 7.5%;
+    margin-left: 4.5%;
 }
 
 .card-info {
@@ -227,5 +227,15 @@
     font-family: coolvetica;
     color: white;
     opacity: 0;
+    padding: 2%;
     box-shadow: 0 0 1px 100vmax rgba(0, 0, 0, 0.6), 0 0 1vh grey;
+}
+
+.card-info p, a {
+    text-shadow: 0 0 2vh grey;
+    font-size: 20px;
+}
+
+.card-info-title {
+    font-size: 35px;
 }
