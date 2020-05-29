@@ -176,7 +176,6 @@ Vue.component('cards', {
             card.animate({height: normalHeight}, 300);
         },
         getCardTopics: function(card) {
-            console.log(card.topic.length)
             if (card.topic.length === 1) {
                 return card.topic[0]
             };
