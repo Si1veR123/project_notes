@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ["localhost", "127.0.0.1"]
@@ -126,3 +126,4 @@ except ImportError:
     import django_heroku
     django_heroku.settings(locals())
     SECRET_KEY = os.environ.get("SECRET_KEY")
+    DEBUG = os.get.environ("DEBUG")
