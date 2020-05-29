@@ -1,106 +1,299 @@
-Vue.component('cards', {
-    props: ["type"],
-    data() {
+Vue.component('filter-bar', {
+    props: ["card-screen"],
+    data: function() {
         return {
-            apiData: [],
-            componentKey: 0,
+            state: {
+                sort: "",
+                filter: {
+                    topic: "",
+                    language: "",
+                },
+            },
+            firstFilter: true,
         };
     },
-    methods: {
-        update: function() {
-            this.componentKey += 1;
+    computed: {
+        topicsWithProjects: function() {
+            return this.$parent.$refs["topic-cards"].topicsdataprop
         },
-        getData: function() {
-            // call the api to get data for the given type of card
-            let vue = this;
-            let url;
-            let infoUrl;
-            switch (this.type) {
-                case "project":
-                    url = "/api/projects/?format=json";
-                    infoUrl = "/api/topics/?format=json";
-                    break;
-                case "topic":
-                    url = "/api/topics/?format=json";
-                    infoUrl = "/api/languages/?format=json";
-                    break;
-                case "language":
-                    url = "/api/languages/?format=json";
-                    break;
-            };
-            response = $.get(url, function(data, status) {
-                if (status === "success") {
-                    var main_data = data;
-                } else {
-                    alert("Server responded incorrectly.");
-                };
-                if (infoUrl) {
-                    $.get(infoUrl, function(data, status) {
-                        if (status === "success") {
-                            var info_data = data;
-                            if (main_data[0]["language"]) {
-                                // type is topics
-                                for (let i = 0; i < main_data.length; i++) {
-                                    let formatted_languages = [];
-                                    for (let y = 0; y < main_data[i].language.length; y++) {
-                                        formatted_languages[y] = info_data.find(function(item) {
-                                            return item.id === main_data[i].language[y];
-                                        })["name"]
-                                    }
-                                    main_data[i].language = formatted_languages;
-                                }
-                            } else {
-                                // type is projects
-                                for (let i = 0; i < main_data.length; i++) {
-                                    let formatted_topics = [];
-                                    for (let y = 0; y < main_data[i].topic.length; y++) {
-                                        formatted_topics[y] = info_data.find(function(item) {
-                                            return item.id === main_data[i].topic[y];
-                                        })["name"]
-                                    }
-                                    main_data[i].topic = formatted_topics;
-                                }
-                            }
-                        } else {
-                            alert("Server responded incorrectly.");
-                        };
-                    });
-                };
-                vue.apiData = main_data;
-            });
+        allLanguages: function() {
+            return this.$parent.$refs["language-cards"].languagesdataprop
+        },
+        sortBy: {
+            set: function(value) {
+                this.state.sort = value;
+            },
+            get: function() {
+                return this.state.sort
+            }
+        },
+        filterTopic: {
+            set: function(value) {
+                this.state.filter.topic = value;
+            },
+            get: function() {
+                return this.state.filter.topic
+            }
+        },
+        filterLanguage: {
+            set: function(value) {
+                this.state.filter.language = value;
+            },
+            get: function() {
+                return this.state.filter.language
+            }
         },
     },
+    methods: {
+        filterData: function(data) {
+            vue = this;
+            filtered = []
+
+            for (let i = 0; i < data.length; i++) {
+                if (
+                    (data[i].topic.indexOf(vue.state.filter.topic) > -1 || vue.state.filter.topic === "") &&
+                    (data[i].language.indexOf(vue.state.filter.language) > -1 || vue.state.filter.language === "")
+                    ) {
+                    filtered.push(data[i])
+                }
+            };
+
+            return filtered;
+        },
+        sortData: function(data) {
+            return data.sort(function(a, b) {
+                return new Date(a) - new Date(b)
+            })
+        }
+    },
     watch: {
-        apiData: {
-            handler(val) {this.update()},
+        state: {
+            handler: function() {
+                let cards = vm.$refs["project-cards"];
+                if (this.firstFilter) {
+                    cards.projectsdata = this.$parent.projectsData;
+                    this.firstFilter = false;
+                };
+                cards.projectsdata = this.sortData(this.filterData(cards.originalProjectData));
+            },
             deep: true,
         }
     },
     template:
     `
-    <div class="card-container" v-if="type === 'project'">
-        <div v-for="card in apiData" :key="card.id" class="card">
-            <div class="innerCard">
-                <p>{{ card.name }}</p>
+    <form class="filter-form">
+        <div class="filter-bar">
+            <div>
+                <label for="topic-select">Topic: </label>
+                <select id="topic-select" v-model="filterTopic">
+                    <option></option>
+                    <option v-for="topic in topicsWithProjects" :key="topic.id">
+                        {{ topic.name }}
+                    </option>
+                </select>
             </div>
-            <div class="innerCardShadow"></div>
+            <div>
+                <label for="language-select">Language: </label>
+                <select id="language-select" v-model="filterLanguage">
+                    <option></option>
+                    <option v-for="language in allLanguages" :key="language.id">
+                        {{ language.name }}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="sort-select">Sort by: </label>
+                <select id="sort-select" v-model="sortBy">
+                    <option>Newest first</option>
+                    <option>Oldest first</option>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="card-container" v-else-if="type === 'topic'">
-        <div v-for="card in apiData" :key="card.id" class="card">
-            <div class="innerCard">
-                <p>{{ card.name }}</p>
-                <p>{{ card.description }}</p>
+    </form>
+    `
+});
+
+Vue.component('cards', {
+    props: ["type", "topicsdataprop", "languagesdataprop", "projectsdataprop"],
+    data: function() {
+        return {
+            localProjectsData: null,
+            projectsDataLoaded: false,
+            cardInfo: false,
+            cardOpened: false,
+            cardInfoData: {
+                title: "",
+                description: "",
+                topics: "",
+                longDescription: "",
+                language: "",
+                link: "",
+                start: "",
+                end: "",
+            },
+        }
+    },
+    computed: {
+        originalProjectData: function() {
+            return this.$parent.projectsData
+        },
+        projectsdata: {
+            get: function() {
+                if (this.localProjectsData === null || !this.projectsDataLoaded) {
+                    return this.projectsdataprop
+                } else {
+                    return this.localProjectsData
+                }
+            },
+            set: function(new_project_data) {
+                if (new_project_data.length > 0) {
+                    this.projectsDataLoaded = true;
+                }
+                this.localProjectsData = new_project_data;
+            },
+        },
+    },
+    methods: {
+        zoomCard: function(event) {
+            try {
+                let card = $(event.target).parent();
+                let distance = (card.find(".card-desc").offset().top + card.find(".card-desc").height()) - (card.offset().top + card.height());
+                if (distance > 10) {
+                    card.animate({height: "+=" + distance}, 300)
+                };
+             } catch(TypeError) {}
+        },
+        unZoomCard: function(event) {
+            let cards = $(".card");
+            for (let i = 0; i < cards.length; i++) {
+                let current = $(cards[i]);
+                if (!(current.is(":hover"))) {
+                    var normalHeight = current.height();
+                    break;
+                };
+            };
+            let card = $(event.target).parent();
+            card.animate({height: normalHeight}, 300);
+        },
+        getCardTopics: function(card) {
+            console.log(card.topic.length)
+            if (card.topic.length === 1) {
+                return card.topic[0]
+            };
+            let max = 2;
+            let topics = card.topic;
+            displayed_topics = []
+            for (let i = 0; i < max; i++) {
+                try {
+                    displayed_topics.push(topics[i]);
+                } catch {
+                    break
+                };
+            };
+            let extra = "";
+            if (card.topic.length > max) {
+                extra = ", ..."
+            };
+            return displayed_topics.join(", ") + extra;
+        },
+        filterAndChangePage: function(filter, value) {
+            switch (filter) {
+                case 'topic':
+                    filter = this.$parent.$refs['filter-bar'];
+                    filter.filterTopic = value;
+                    filter.filterLanguage = "";
+                    break;
+
+                case 'language':
+                    filter = this.$parent.$refs['filter-bar'];
+                    filter.filterLanguage = value;
+                    filter.filterTopic = "";
+                    break;
+            }
+            this.$parent.changePage('#projects');
+        },
+        showInfo: function(card) {
+            let info = this.cardInfoData
+            info.title = card.name;
+            info.description = card.description;
+            info.longDescription = card.notes;
+            info.language = card.language.join(", ");
+            info.start = card.start;
+            info.end = card.finished;
+            info.topics = card.topic.join(", ");
+            info.link = card.github;
+
+            this.cardInfo = true;
+
+            vue = this;
+            $(".card-info").animate({opacity: 1}, 300, function() {
+                vue.cardOpened = true;
+            });
+        },
+        closeCard: function() {
+            vue = this;
+            $(".card-info").animate({opacity: 0}, 300, function() {
+                vue.cardInfo = false;
+                vue.cardOpened = false;
+            });
+        },
+    },
+    template:
+    `
+    <div>
+        <div class="card-container" v-if="type === 'project'">
+            <div v-for="card in projectsdata" :key="card.id" class="card">
+                <div class="innerCard">
+                    <p><strong>{{ card.name }}</strong></p>
+                    <p>{{ getCardTopics(card) }}</p>
+                    <p class="card-desc">{{ card.description }}<br></p>
+                </div>
+                <div
+                    class="innerCardShadow"
+                    @mouseover="zoomCard($event)"
+                    @mouseout="unZoomCard($event)"
+                    @click="showInfo(card)">
+                    </div>
             </div>
-            <div class="innerCardShadow"></div>
         </div>
-    </div>
-    <div class="card-container" v-else-if="type === 'language'">
-        <div v-for="card in apiData" :key="card.id" class="card">
-            <div class="innerCard">
-                <p>{{ card.name }}</p>
+        <div class="card-container" v-else-if="type === 'topic'">
+            <div v-for="card in topicsdataprop" :key="card.id" class="card">
+                <div class="innerCard">
+                    <p><strong>{{ card.name }}</strong></p>
+                    <p class="card-desc">{{ card.description }}</p>
+                </div>
+                <div
+                    class="innerCardShadow"
+                    @mouseover="zoomCard($event)"
+                    @mouseout="unZoomCard($event)"
+                    @click="filterAndChangePage('topic', card.name)"
+                ></div>
             </div>
-            <div class="innerCardShadow"></div>
+        </div>
+        <div class="card-container" v-else-if="type === 'language'">
+            <div v-for="card in languagesdataprop" :key="card.id" class="card">
+                <div class="innerCard">
+                    <p style="margin-top: 20%;"><strong>{{ card.name }}</strong></p>
+                </div>
+                <div
+                    class="innerCardShadow"
+                    @mouseover="zoomCard($event)"
+                    @mouseout="unZoomCard($event)"
+                    @click="filterAndChangePage('language', card.name)"
+                    ></div>
+            </div>
+        </div>
+        <div class="card-info-container" v-show="cardInfo">
+            <div class="card-info">
+                <p><strong>{{ cardInfoData.title }}</strong></p>
+                <p>{{ cardInfoData.description }}</p>
+                <p>{{ cardInfoData.language }}</p>
+                <p>{{ cardInfoData.topics }}</p>
+                <p>{{ cardInfoData.start }} - {{ cardInfoData.end }}</p>
+                <a :href="cardInfoData.link" target="_blank">{{ cardInfoData.link }}</a>
+                <hr>
+                <p>{{ cardInfoData.longDescription }}</p>
+            </div>
         </div>
     </div>
     `
@@ -200,3 +393,9 @@ Vue.component('nav-bar', {
         </div>
     `,
 });
+
+$(document).on("click", function(e) {
+    if (vm.$refs["project-cards"].cardOpened && $(e.target).parents(".card-info").length === 0) {
+        vm.$refs["project-cards"].closeCard()
+    };
+})

@@ -13,19 +13,20 @@
 
             </div>
         </div>
-        <div class="page" v-show="currentPage === '#projects'" :ref="'#projects'">
-            <div class="page-content">
-                <cards :type="'project'"></cards>
-            </div>
-        </div>
         <div class="page" v-show="currentPage === '#topics'" :ref="'#topics'">
             <div class="page-content">
-                <cards :type="'topic'"></cards>
+                <cards :type="'topic'" :topicsdataprop="topicsData" :ref="'topic-cards'"></cards>
             </div>
         </div>
         <div class="page" v-show="currentPage === '#languages'" :ref="'#languages'">
             <div class="page-content">
-                <cards :type="'language'"></cards>
+                <cards :type="'language'" :languagesdataprop="languagesData" :ref="'language-cards'"></cards>
+            </div>
+        </div>
+        <div class="page" v-show="currentPage === '#projects'" :ref="'#projects'">
+            <div class="page-content">
+                <filter-bar :ref="'filter-bar'"></filter-bar>
+                <cards :type="'project'" :projectsdataprop="projectsData" :ref="'project-cards'"></cards>
             </div>
         </div>
     </div>
@@ -52,4 +53,5 @@
 <script src="{% static 'js/vue/components.js' %}"></script>
 <script src="{% static 'js/vue/app.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/cards.js' %}"></script>
 {% endblock %}
