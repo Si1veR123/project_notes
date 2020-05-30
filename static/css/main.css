@@ -10,14 +10,23 @@
     width: 100%;
     height: 10%;
 
+    background-image: -webkit-gradient(linear, left top, right top, from(rgb(179, 224, 255)), to(rgb(0, 153, 255)));
+
+    background-image: -o-linear-gradient(left, rgb(179, 224, 255), rgb(0, 153, 255));
+
     background-image: linear-gradient(to right, rgb(179, 224, 255), rgb(0, 153, 255));
 }
 
 #navbar-option-container {
     width: 100%;
     height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-pack: distribute;
     justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -27,6 +36,8 @@
     text-shadow: 0 0 4vh white;
     color: white;
     margin: 0;
+    -webkit-transition: color 0.3s;
+    -o-transition: color 0.3s;
     transition: color 0.3s;
 }
 
@@ -46,8 +57,11 @@
     width: 100%;
     top: 100%;
     height: 50vh;
+    background-image: -webkit-gradient(linear, left top, right top, from(rgb(179, 224, 255)), to(rgb(0, 153, 255)));
+    background-image: -o-linear-gradient(left, rgb(179, 224, 255), rgb(0, 153, 255));
     background-image: linear-gradient(to right, rgb(179, 224, 255), rgb(0, 153, 255));
     display: none;
+    -webkit-box-shadow: 0 0 1vh white;
     box-shadow: 0 0 1vh white;
 }
 
@@ -57,6 +71,8 @@
     text-decoration: none;
     color: white;
     text-shadow: 0 0 5vh grey;
+    -webkit-transition: color 0.3s;
+    -o-transition: color 0.3s;
     transition: color 0.3s;
 }
 
@@ -70,9 +86,19 @@
     height: 100%;
     width: 100%;
 
+    display: -webkit-box;
+
+    display: -ms-flexbox;
+
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -ms-flex-pack: distribute;
     justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -95,9 +121,20 @@
     font-family: coolvetica;
     font-size: 5vw;
 
+    display: -webkit-box;
+
+    display: -ms-flexbox;
+
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -114,7 +151,7 @@
 
 .page {
     position: absolute;
-    margin: 3%;
+    margin: 2%;
     width: 100%;
 }
 
@@ -125,10 +162,20 @@
 }
 
 .card-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
     flex-direction: row;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
     align-items: stretch;
     margin-right: 5%;
 }
@@ -140,17 +187,25 @@
     margin: 2%;
     padding: 1%;
     border-radius: 1vh;
-    border: solid 1px orange;
+    border: solid 1px darkorange;
     text-align: center;
     background-color: rgb(240, 240, 240);
-    box-shadow: 0 0 1vh orange;
+    -webkit-box-shadow: 0 0 1vh darkorange;
+    box-shadow: 0 0 1vh darkorange;
+    -webkit-transition: color 0.2s, -webkit-box-shadow 0.2s ease, -webkit-transform 0.2s ease;
+    transition: color 0.2s, -webkit-box-shadow 0.2s ease, -webkit-transform 0.2s ease;
+    -o-transition: box-shadow 0.2s ease, transform 0.2s ease, color 0.2s;
     transition: box-shadow 0.2s ease, transform 0.2s ease, color 0.2s;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, color 0.2s, -webkit-box-shadow 0.2s ease, -webkit-transform 0.2s ease;
     overflow: hidden;
-    color: orange;
+    color: darkorange;
 }
 
 .card:hover {
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
     transform: scale(1.1);
+    -webkit-box-shadow: 0 0 1vh lightblue;
     box-shadow: 0 0 1vh lightblue;
     border-color: lightblue;
     cursor: pointer;
@@ -167,11 +222,17 @@
     left: 0;
     width: 120%;
     height: 100%;
+    -webkit-box-shadow: inset 0 -2vh 2vh rgb(240, 240, 240);
     box-shadow: inset 0 -2vh 2vh rgb(240, 240, 240);
+    -webkit-transition: -webkit-box-shadow 0.3s ease;
+    transition: -webkit-box-shadow 0.3s ease;
+    -o-transition: box-shadow 0.3s ease;
     transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, -webkit-box-shadow 0.3s ease;
 }
 
 .innerCardShadow:hover {
+    -webkit-box-shadow: inset 0 0 0 white;
     box-shadow: inset 0 0 0 white;
 }
 
@@ -181,12 +242,22 @@
     width: 80%;
     height: 8vh;
     margin: 0 0 5vh 8%;
+    -webkit-box-shadow: 0 0 2vh grey;
     box-shadow: 0 0 2vh grey;
     border: solid 1px lightblue;
+    -webkit-transition: background-color 0.2s;
+    -o-transition: background-color 0.2s;
     transition: background-color 0.2s;
 
+    display: -webkit-box;
+
+    display: -ms-flexbox;
+
     display: flex;
+    -ms-flex-pack: distribute;
     justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -201,20 +272,25 @@
 }
 
 .filter-form select {
-    width: 8vw;
+    width: 15vw;
     border-radius: 1vh;
     font-family: coolvetica;
+    -webkit-transition: border-color 0.3s, -webkit-box-shadow 0.1s;
+    transition: border-color 0.3s, -webkit-box-shadow 0.1s;
+    -o-transition: box-shadow 0.1s, border-color 0.3s;
     transition: box-shadow 0.1s, border-color 0.3s;
+    transition: box-shadow 0.1s, border-color 0.3s, -webkit-box-shadow 0.1s;
 }
 
 .filter-form select:focus {
+    -webkit-box-shadow: 0 0 1vh grey;
     box-shadow: 0 0 1vh grey;
     outline: 0;
-    border-color: orange;
+    border-color: darkorange;
 }
 
 .card-info-container {
-    margin-left: 4.5%;
+    margin-left: 5.5%;
 }
 
 .card-info {
@@ -228,6 +304,7 @@
     color: white;
     opacity: 0;
     padding: 2%;
+    -webkit-box-shadow: 0 0 1px 100vmax rgba(0, 0, 0, 0.6), 0 0 1vh grey;
     box-shadow: 0 0 1px 100vmax rgba(0, 0, 0, 0.6), 0 0 1vh grey;
 }
 
@@ -238,4 +315,9 @@
 
 .card-info-title {
     font-size: 35px;
+}
+
+#footer {
+    color: lightgrey;
+    font-family: coolvetica;
 }

@@ -5,7 +5,7 @@
     <head>
         <link rel="icon" href="{% static 'favicon.png' %}">
         <style>
-            html, body {
+            body {
                 margin:0;
                 padding:0;
                 overflow-x: hidden;
@@ -17,6 +17,10 @@
     <body>
         {% block 'content' %}
         {% endblock %}
+
+        <div style="width: 100%; text-align: center;">
+            <p id="footer">Made in 2020</p>
+        </div>
 
         {% if debug %}
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
