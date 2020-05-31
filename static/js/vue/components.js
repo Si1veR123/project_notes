@@ -61,8 +61,13 @@ Vue.component('filter-bar', {
             return filtered;
         },
         sortData: function(data) {
+            vue = this;
             return data.sort(function(a, b) {
-                return new Date(a) - new Date(b)
+                if (vue.state.sort === "Newest first") {
+                    return new Date(b.finished) - new Date(a.finished)
+                } else {
+                    return new Date(a.finished) - new Date(b.finished)
+                }
             })
         }
     },
