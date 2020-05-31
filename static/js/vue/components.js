@@ -61,6 +61,9 @@ Vue.component('filter-bar', {
             return filtered;
         },
         sortData: function(data) {
+            if (this.state.sort === "") {
+                return data
+            };
             vue = this;
             return data.sort(function(a, b) {
                 if (vue.state.sort === "Newest first") {
@@ -109,6 +112,7 @@ Vue.component('filter-bar', {
             <div>
                 <label for="sort-select">Sort by: </label>
                 <select id="sort-select" v-model="sortBy">
+                    <option></option>
                     <option>Newest first</option>
                     <option>Oldest first</option>
                 </select>
